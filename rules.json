@@ -1,4 +1,427 @@
 [
-    {"habilidade": "habilidade_teste", "regra": "lambda vars: (vars.get('trecho_outro_genero_9') == 0)", "peso": 10}, 
-    {"habilidade": "outra_habilidade_teste", "regra": "lambda vars: (vars.get('trecho_outro_genero_9') == 0) & (vars.get('num_pontuacao_eixo_2')>=120)", "peso": 5}
+    {
+        "habilidade": "fuga_ao_genero",
+        "regra": "lambda vars: (vars.get('cod_condicional') == 9)",
+        "peso": 10
+    },
+    {
+        "habilidade": "plagio_ou_copia_integral",
+        "regra": "lambda vars: (vars.get('cod_condicional') == 6)",
+        "peso": 10
+    },
+    {
+        "habilidade": "conclusao_finalizada_por_frase_incompleta",
+        "regra": "lambda vars: (vars.get('cod_condicional') == 44)",
+        "peso": 10
+    },
+    {
+        "habilidade": "fuga_ao_tema",
+        "regra": "lambda vars: (vars.get('cod_condicional') == 4)",
+        "peso": 10
+    },
+    {
+        "habilidade": "tangencia_ao_tema",
+        "regra": "lambda vars: (vars.get('cod_condicional') == 43)",
+        "peso": 10
+    },
+    {
+        "habilidade": "trechos_de_outros_generos",
+        "regra": "lambda vars: (vars.get('cod_condicional') == 38)",
+        "peso": 10
+    },
+    {
+        "habilidade": "trechos_de_outros_generos",
+        "regra": "lambda vars: (vars.get('trecho_outro_genero_9') >= 3)",
+        "peso": 5
+    },
+    {
+        "habilidade": "trechos_de_outros_generos",
+        "regra": "lambda vars: (vars.get('flagid_362') >= 3)",
+        "peso": 5
+    },
+    {
+        "habilidade": "trechos_de_outros_generos",
+        "regra": "lambda vars: (vars.get('flagid_12') >= 3)",
+        "peso": 5
+    },
+    {
+        "habilidade": "trechos_de_outros_generos",
+        "regra": "lambda vars: (vars.get('trecho_outro_genero_9') >= 1) & (vars.get('trecho_outro_genero_9') < 3) & (vars.get('num_pontuacao_eixo_2') <= 80)",
+        "peso": 5
+    },
+    {
+        "habilidade": "trechos_de_copia_de_coletanea",
+        "regra": "lambda vars: (vars.get('cod_condicional') == 37)",
+        "peso": 10
+    },
+    {
+        "habilidade": "trechos_de_copia_de_coletanea",
+        "regra": "lambda vars: (vars.get('copia_11_315') >= 2)",
+        "peso": 5
+    },
+    {
+        "habilidade": "partes_embrionarias",
+        "regra": "lambda vars: (vars.get('cod_condicional') == 34)",
+        "peso": 10
+    },
+    {
+        "habilidade": "partes_embrionarias",
+        "regra": "lambda vars: (vars.get('cod_condicional') == 35)",
+        "peso": 10
+    },
+    {
+        "habilidade": "partes_embrionarias",
+        "regra": "lambda vars: (vars.get('falta_parte_genero_10') >= 2)",
+        "peso": 5
+    },
+    {
+        "habilidade": "abordagem_tematica",
+        "regra": "lambda vars: (vars.get('num_pontuacao_eixo_2') <= 40)",
+        "peso": 5
+    },
+    {
+        "habilidade": "genero_dissertativo_argumentativo",
+        "regra": "lambda vars: (vars.get('soma_bandeirinhas') == 0) & (vars.get('num_pontuacao_eixo_2') == 80)",
+        "peso": 5
+    },
+    {
+        "habilidade": "genero_dissertativo_argumentativo",
+        "regra": "lambda vars: (vars.get('trecho_outro_genero_9') >= 1) & (vars.get('num_pontuacao_eixo_2') >= 120)  & (vars.get('num_pontuacao_eixo_2') < 200)",
+        "peso": 5
+    },
+    {
+        "habilidade": "genero_dissertativo_argumentativo",
+        "regra": "lambda vars: (vars.get('falta_parte_genero_10') == 1)  & (vars.get('num_pontuacao_eixo_2') < 200)",
+        "peso": 5
+    },
+    {
+        "habilidade": "genero_dissertativo_argumentativo",
+        "regra": "lambda vars: (vars.get('copia_11_315') == 1) & (vars.get('num_pontuacao_eixo_2') < 200)",
+        "peso": 5
+    },
+    {
+        "habilidade": "uso_de_repertorio",
+        "regra": "lambda vars: (vars.get('rep_nao_legitimado_13') == 1) & (vars.get('num_pontuacao_eixo_2') <= 80)",
+        "peso": 5
+    },
+    {
+        "habilidade": "uso_de_repertorio",
+        "regra": "lambda vars: (vars.get('rep_pertinente_15_675') == 1) & (vars.get('num_pontuacao_eixo_2') <= 80)",
+        "peso": 5
+    },
+    {
+        "habilidade": "uso_de_repertorio",
+        "regra": "lambda vars: (vars.get('rep_produtivo_16') == 1) & (vars.get('num_pontuacao_eixo_2') <= 120)",
+        "peso": 5
+    },
+    {
+        "habilidade": "uso_de_repertorio",
+        "regra": "lambda vars: (vars.get('soma_bandeirinhas') == 0) & (vars.get('num_pontuacao_eixo_2') == 120)",
+        "peso": 5
+    },
+    {
+        "habilidade": "repertorio_baseado_na_coletanea",
+        "regra": "lambda vars: (vars.get('flagid_801') >= 2)",
+        "peso": 5
+    },
+    {
+        "habilidade": "repertorio_nao_legitimado",
+        "regra": "lambda vars: (vars.get('rep_nao_legitimado_13') >= 2)",
+        "peso": 5
+    },
+    {
+        "habilidade": "repertorio_nao_legitimado",
+        "regra": "lambda vars: (vars.get('rep_nao_legitimado_13') == 1) & (vars.get('num_pontuacao_eixo_2') >= 120) &  (vars.get('num_pontuacao_eixo_2') < 200)",
+        "peso": 5
+    },
+    {
+        "habilidade": "repertorio_nao_pertinente_ao_tema",
+        "regra": "lambda vars: (vars.get('flagid_14') >= 2)",
+        "peso": 5
+    },
+    {
+        "habilidade": "repertorio_nao_pertinente_ao_tema",
+        "regra": "lambda vars: (vars.get('rep_pertinente_15_675') >= 2)",
+        "peso": 5
+    },
+    {
+        "habilidade": "repertorio_nao_pertinente_ao_tema",
+        "regra": "lambda vars: (vars.get('rep_pertinente_15_675') == 1) & (vars.get('num_pontuacao_eixo_2') >= 120) &  (vars.get('num_pontuacao_eixo_2') < 200)",
+        "peso": 5
+    },
+    {
+        "habilidade": "repertorio_nao_produtivo",
+        "regra": "lambda vars: (vars.get('rep_produtivo_16') >= 1)",
+        "peso": 5
+    },
+    {
+        "habilidade": "repertorio_nao_produtivo",
+        "regra": "lambda vars: (vars.get('soma_bandeirinhas') == 0) & (vars.get('num_pontuacao_eixo_2') == 160)",
+        "peso": 5
+    },
+    {
+        "habilidade": "nuvem_de_repertorios_socioculturais",
+        "regra": "lambda vars: (vars.get('num_pontuacao_eixo_2') == 200)",
+        "peso": 5
+    },
+    {
+        "habilidade": "desvio_foco_tematico",
+        "regra": "lambda vars: (vars.get('num_pontuacao_eixo_3') <= 80) & (vars.get('distaciam_prop_tematica_804') >= 1)",
+        "peso": 5
+    },
+    {
+        "habilidade": "projeto_texto_precario",
+        "regra": "lambda vars: (vars.get('num_pontuacao_eixo_3') == 40) & (vars.get('soma_bandeirinhas_c3') == 0)",
+        "peso": 5
+    },
+    {
+        "habilidade": "projeto_texto_precario",
+        "regra": "lambda vars: (vars.get('num_pontuacao_eixo_3') <= 80) & (vars.get('distaciam_prop_tematica_804') == 0)",
+        "peso": 5
+    },
+    {
+        "habilidade": "falha_organizacao_textual",
+        "regra": "lambda vars: (vars.get('num_pontuacao_eixo_3') == 80) & (vars.get('soma_bandeirinhas_c3') == 0)",
+        "peso": 5
+    },
+    {
+        "habilidade": "falha_organizacao_textual",
+        "regra": "lambda vars: (vars.get('num_pontuacao_eixo_3') >= 120) & (vars.get('num_pontuacao_eixo_3') <= 160) & (vars.get('soma_organiz') >= 1)",
+        "peso": 5
+    },
+    {
+        "habilidade": "falha_desenvolvimento_argumentativo",
+        "regra": "lambda vars: (vars.get('num_pontuacao_eixo_3') == 120) & (vars.get('soma_bandeirinhas_c3') == 0)",
+        "peso": 5
+    },
+    {
+        "habilidade": "falha_desenvolvimento_argumentativo",
+        "regra": "lambda vars: (vars.get('num_pontuacao_eixo_3') >= 120) & (vars.get('num_pontuacao_eixo_3') <= 160) & (vars.get('soma_organiz') == 0) & (vars.get('soma_argument') >= 1)",
+        "peso": 5
+    },
+    {
+        "habilidade": "lacunas_argumentativas",
+        "regra": "lambda vars: (vars.get('num_pontuacao_eixo_3') == 160) & (vars.get('soma_bandeirinhas_c3') == 0)",
+        "peso": 5
+    },
+    {
+        "habilidade": "lacunas_argumentativas",
+        "regra": "lambda vars: (vars.get('num_pontuacao_eixo_3') == 120) & (vars.get('soma_positivas_c3') >= 1)",
+        "peso": 5
+    },
+    {
+        "habilidade": "lacunas_argumentativas",
+        "regra": "lambda vars: (vars.get('num_pontuacao_eixo_3') == 160) & (vars.get('soma_positivas_c3') == 1)",
+        "peso": 5
+    },
+    {
+        "habilidade": "qualidade_argumentacao",
+        "regra": "lambda vars: (vars.get('num_pontuacao_eixo_3') >= 120) & (vars.get('num_pontuacao_eixo_3') <= 160) & (vars.get('distaciam_prop_tematica_804') > 0)",
+        "peso": 5
+    },
+    {
+        "habilidade": "qualidade_argumentacao",
+        "regra": "lambda vars: (vars.get('num_pontuacao_eixo_3') <= 80) & (vars.get('soma_positivas_c3') >= 2)",
+        "peso": 5
+    },
+    {
+        "habilidade": "nota_maxima_c3",
+        "regra": "lambda vars: (vars.get('num_pontuacao_eixo_3') == 200)",
+        "peso": 5
+    },
+    {
+        "habilidade": "nota_maxima_c3",
+        "regra": "lambda vars: (vars.get('num_pontuacao_eixo_3') == 160) & (vars.get('soma_positivas_c3') >= 2)",
+        "peso": 5
+    },
+    {
+        "habilidade": "monobloco",
+        "regra": "lambda vars: (vars.get('num_pontuacao') < 300) & (vars.get('num_pontuacao_eixo_4') <= 40)",
+        "peso": 10
+    },
+    {
+        "habilidade": "problemas_estrutura",
+        "regra": "lambda vars: (vars.get('num_pontuacao') >= 300) & (vars.get('num_pontuacao_eixo_4') <= 40)",
+        "peso": 10
+    },
+    {
+        "habilidade": "repeticao_excessiva_palavras",
+        "regra": "lambda vars: (vars.get('num_pontuacao_eixo_4') <= 160) & (vars.get('repeticao_27_291') > 3)",
+        "peso": 10
+    },
+    {
+        "habilidade": "repeticao_palavras",
+        "regra": "lambda vars: (vars.get('num_pontuacao_eixo_4') <= 160) & (vars.get('repeticao_27_291') > 1) & (vars.get('repeticao_27_291') <= 3)",
+        "peso": 10
+    },
+    {
+        "habilidade": "conectivo_inadequado",
+        "regra": "lambda vars: (vars.get('num_pontuacao_eixo_4') <= 160) & (vars.get('inadequacao_289') >= 1)",
+        "peso": 10
+    },
+    {
+        "habilidade": "repertorio_limitado_conectivos",
+        "regra": "lambda vars: (vars.get('num_pontuacao_eixo_4') <= 80) & (vars.get('soma_positivas_c4') <= 1)",
+        "peso": 10
+    },
+    {
+        "habilidade": "repertorio_limitado_conectivos",
+        "regra": "lambda vars: (vars.get('num_pontuacao_eixo_4') == 120) & (vars.get('soma_negativas_c4') > 1)",
+        "peso": 10
+    },
+    {
+        "habilidade": "repertorio_pouco_diversificado_conectivos",
+        "regra": "lambda vars: (vars.get('num_pontuacao_eixo_4') <= 80) & (vars.get('soma_positivas_c4') > 1)",
+        "peso": 10
+    },
+    {
+        "habilidade": "repertorio_pouco_diversificado_conectivos",
+        "regra": "lambda vars: (vars.get('num_pontuacao_eixo_4') == 160) & (vars.get('soma_negativas_c4') > 1)",
+        "peso": 10
+    },
+    {
+        "habilidade": "repertorio_pouco_diversificado_conectivos",
+        "regra": "lambda vars: (vars.get('soma_bandeirinhas_c4') == 0) & (vars.get('num_pontuacao_eixo_4') == 120)",
+        "peso": 10
+    },
+    {
+        "habilidade": "falta_conectivo_dentro_paragrafo",
+        "regra": "lambda vars: (vars.get('num_pontuacao_eixo_4') >= 120) & (vars.get('num_pontuacao_eixo_4') <= 160) & (vars.get('falha_intersent_25_288') >= 2)",
+        "peso": 10
+    },
+    {
+        "habilidade": "falta_conectivo_dentro_paragrafo",
+        "regra": "lambda vars: (vars.get('num_pontuacao_eixo_4') >= 120) & (vars.get('num_pontuacao_eixo_4') <= 160) & (vars.get('elogio_conec_interpar_28') >= 2)",
+        "peso": 10
+    },
+    {
+        "habilidade": "falta_conectivo_entre_paragrafos",
+        "regra": "lambda vars: (vars.get('num_pontuacao_eixo_4') >= 120) & (vars.get('num_pontuacao_eixo_4') <= 160) & (vars.get('falha_interpar_26_290') >= 2)",
+        "peso": 10
+    },
+    {
+        "habilidade": "falta_conectivo_entre_paragrafos",
+        "regra": "lambda vars: (vars.get('num_pontuacao_eixo_4') >= 120) & (vars.get('num_pontuacao_eixo_4') <= 160) & (vars.get('elogio_conec_intersent_29') >= 2)",
+        "peso": 10
+    },
+    {
+        "habilidade": "falta_conectivo_entre_paragrafos",
+        "regra": "lambda vars: (vars.get('num_pontuacao_eixo_4') == 160) & (vars.get('soma_negativas_c4') < 1)",
+        "peso": 10
+    },
+    {
+        "habilidade": "falta_conectivo_entre_paragrafos",
+        "regra": "lambda vars: (vars.get('soma_bandeirinhas_c4') == 0) & (vars.get('num_pontuacao_eixo_4') == 160)",
+        "peso": 10
+    },
+    {
+        "habilidade": "recursos_coesivos",
+        "regra": "lambda vars: (vars.get('num_pontuacao_eixo_4') == 120) & (vars.get('soma_positivas_c4') >= 1)",
+        "peso": 10
+    },
+    {
+        "habilidade": "nuvem",
+        "regra": "lambda vars: (vars.get('num_pontuacao_eixo_4') == 200)",
+        "peso": 10
+    },
+    {
+        "habilidade": "proposta_condicional",
+        "regra": "lambda vars: (vars.get('cod_condicional') == 15)",
+        "peso": 10
+    },
+    {
+        "habilidade": "elementos_nulos",
+        "regra": "lambda vars: (vars.get('cod_condicional') == 14)",
+        "peso": 10
+    },
+    {
+        "habilidade": "elementos_nulos",
+        "regra": "lambda vars: (vars.get('num_pontuacao_eixo_5') <= 40) & (vars.get('elem_nulo_813') > 0)",
+        "peso": 5
+    },
+    {
+        "habilidade": "nao_ha_proposta",
+        "regra": "lambda vars: (vars.get('cod_condicional') == 18)",
+        "peso": 10
+    },
+    {
+        "habilidade": "nao_ha_proposta",
+        "regra": "lambda vars: (vars.get('cod_condicional') == 0) & (vars.get('num_pontuacao_eixo_5') == 0)",
+        "peso": 5
+    },
+    {
+        "habilidade": "proposta_incompleta",
+        "regra": "lambda vars: (vars.get('num_pontuacao_eixo_5') <= 80) & (vars.get('cod_condicional') == 0) & (vars.get('soma_elementos') <= 1)",
+        "peso": 5
+    },
+    {
+        "habilidade": "proposta_incompleta",
+        "regra": "lambda vars: (vars.get('num_pontuacao_eixo_5') > 80) & (vars.get('num_pontuacao_eixo_5') < 200) & (vars.get('soma_elementos') > 4)",
+        "peso": 5
+    },
+    {
+        "habilidade": "falta_agente",
+        "regra": "lambda vars: (vars.get('num_pontuacao_eixo_5') >= 40) & (vars.get('num_pontuacao_eixo_5') < 200) & (vars.get('soma_elementos') > 0) & (vars.get('agente_808') == 0)",
+        "peso": 5
+    },
+    {
+        "habilidade": "falta_acao",
+        "regra": "lambda vars: (vars.get('num_pontuacao_eixo_5') >= 40) & (vars.get('num_pontuacao_eixo_5') < 200) & (vars.get('soma_elementos') > 0) & (vars.get('acao_809') == 0)",
+        "peso": 5
+    },
+    {
+        "habilidade": "falta_efeito",
+        "regra": "lambda vars: (vars.get('num_pontuacao_eixo_5') >= 40) & (vars.get('num_pontuacao_eixo_5') < 200) & (vars.get('soma_elementos') > 0) & (vars.get('efeito_811') == 0)",
+        "peso": 5
+    },
+    {
+        "habilidade": "falta_modo",
+        "regra": "lambda vars: (vars.get('num_pontuacao_eixo_5') >= 40) & (vars.get('num_pontuacao_eixo_5') < 200) & (vars.get('soma_elementos') > 0) & (vars.get('modo_810') == 0)",
+        "peso": 5
+    },
+    {
+        "habilidade": "falta_modo",
+        "regra": "lambda vars: (vars.get('num_pontuacao_eixo_5') == 120) & (vars.get('soma_bandeirinhas') == 0)",
+        "peso": 5
+    },
+    {
+        "habilidade": "falta_detalhamento",
+        "regra": "lambda vars: (vars.get('num_pontuacao_eixo_5') >= 40) & (vars.get('num_pontuacao_eixo_5') < 200) & (vars.get('soma_elementos') > 0) & (vars.get('detalham_812') == 0)",
+        "peso": 5
+    },
+    {
+        "habilidade": "falta_detalhamento",
+        "regra": "lambda vars: (vars.get('num_pontuacao_eixo_5') == 160) & (vars.get('soma_bandeirinhas') == 0)",
+        "peso": 5
+    },
+    {
+        "habilidade": "proposta_intervencao",
+        "regra": "lambda vars: (vars.get('num_pontuacao_eixo_5') <= 40) & (vars.get('soma_elementos') > 4)",
+        "peso": 5
+    },
+    {
+        "habilidade": "proposta_intervencao",
+        "regra": "lambda vars: (vars.get('num_pontuacao_eixo_5') >= 120) & (vars.get('num_pontuacao_eixo_5') <= 160) & (vars.get('soma_elementos') == 0)",
+        "peso": 5
+    },
+    {
+        "habilidade": "proposta_intervencao",
+        "regra": "lambda vars: (vars.get('cod_condicional') == 45)",
+        "peso": 5
+    },
+    {
+        "habilidade": "proposta_intervencao",
+        "regra": "lambda vars: (vars.get('cod_condicional') == 12)",
+        "peso": 5
+    },
+    {
+        "habilidade": "nota_maxima_c5",
+        "regra": "lambda vars: (vars.get('num_pontuacao_eixo_5') == 200)",
+        "peso": 5
+    },
+    {
+        "habilidade": "nota_maxima_c5",
+        "regra": "lambda vars: (vars.get('num_pontuacao_eixo_5') == 160) & (vars.get('prop_completa_814_911') >= 1)",
+        "peso": 5
+    }
 ]
