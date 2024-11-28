@@ -2,8 +2,9 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 
+
 # Exemplo de DataFrame
-def create_example_dataframe():
+def _create_example_dataframe():
     np.random.seed(42)
     data = {
         'Categoria': np.random.choice(['A', 'B', 'C'], size=100),
@@ -13,13 +14,13 @@ def create_example_dataframe():
     }
     return pd.DataFrame(data)
 
-# Função principal
-def main():
+# Função da tela de filtros
+def screen_newRules():
     st.title("Filtro de DataFrame Interativo")
     st.write("Este aplicativo permite filtrar um DataFrame com base em colunas selecionadas e exibe a contagem de linhas correspondentes.")
 
     # Carregar DataFrame
-    df = create_example_dataframe()
+    df = _create_example_dataframe()
 
     # Seleção de colunas a filtrar
     st.sidebar.header("Configuração de Filtros")
@@ -72,6 +73,5 @@ def main():
     st.write("### Dados Filtrados")
     st.dataframe(filtered_df)
 
-# Executar
-if __name__ == "__main__":
-    main()
+
+screen_newRules()
