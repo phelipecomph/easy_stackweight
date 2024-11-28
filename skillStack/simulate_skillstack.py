@@ -109,6 +109,7 @@ def simulate_stack(
 
     elif output_type == "plot":
         df = pd.DataFrame(list(_mean_stack(output_data).items()), columns=["Regra", "Peso"])
+        df = df.sort_values(by="Peso", ascending=False)
 
         # Criar o gráfico de barras com Plotly
         fig = px.bar(df, x="Regra", y="Peso", title="Gráfico de Barras")
