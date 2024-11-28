@@ -1,5 +1,5 @@
 import streamlit as st
-from pages import new_rule 
+from pages import new_rule, edit_rules
 
 # Configuração geral do app
 st.set_page_config(page_title="Main", layout="wide")
