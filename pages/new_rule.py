@@ -176,11 +176,23 @@ def screen_newRules():
     st.title("Filtro de DataFrame Interativo")
     st.write("Este aplicativo permite filtrar um DataFrame com base em colunas selecionadas e exibe a contagem de linhas correspondentes.")
 
+    # Input para alterar o número de amostras no DataFrame
+    st.sidebar.header("Configuração de Amostras")
+    sample_size = st.sidebar.number_input(
+        "Número de amostras a carregar:",
+        min_value=1,  # Valor mínimo de amostras
+        value=10000,  # Valor padrão
+        step=100  # Passo para ajuste
+    )
+
     # Carregar DataFrame
     df = load_data(method='csv', path='data/conteudo_adaptativoc2_dados_selecionados.csv')
+    try: df.sample(sample_size)
+    except ValueError: pass
 
     # Seleção de colunas a filtrar
     st.sidebar.header("Configuração de Filtros")
+
     selected_columns = st.sidebar.multiselect(
         "Selecione as colunas para adicionar filtros:",
         options=df.columns,
