@@ -10,12 +10,32 @@ RULES_FILE = "rules.json"
 
 def write_rule(filters, rule_name, rule_weight, df):
     # Gerar a regra em formato de string
-    rule_string = " & ".join([
-        f"(vars.get('{col}') >= {filters[col][0]}) & (vars.get('{col}') <= {filters[col][1]})"
-        if pd.api.types.is_numeric_dtype(df[col]) else
-        f"vars.get('{col}') in {filters[col]}"
-        for col in filters
-    ])
+    rule_parts = []
+
+    for col in filters:
+        if pd.api.types.is_numeric_dtype(df[col]):
+            # Obtém os limites do filtro
+            min_val, max_val = filters[col]
+
+            # Obtém os limites da variável no DataFrame
+            col_min, col_max = df[col].min(), df[col].max()
+
+            # Constrói as condições com base nos limites
+            conditions = []
+            if min_val > col_min:  # Inclui condição >= apenas se min_val não for o valor mínimo
+                conditions.append(f"(vars.get('{col}') >= {min_val})")
+            if max_val < col_max:  # Inclui condição <= apenas se max_val não for o valor máximo
+                conditions.append(f"(vars.get('{col}') <= {max_val})")
+
+            # Adiciona a condição da coluna à regra final
+            if conditions:
+                rule_parts.append(" & ".join(conditions))
+        else:
+            # Condição para colunas não numéricas
+            rule_parts.append(f"vars.get('{col}') in {filters[col]}")
+
+    # Gerar a regra completa
+    rule_string = " & ".join(rule_parts)
 
     # Criar o dicionário da nova regra
     new_rule = {
@@ -35,6 +55,7 @@ def write_rule(filters, rule_name, rule_weight, df):
 
     with open(RULES_FILE, "w") as f:
         json.dump(rules, f, indent=4)
+
 
 
 # Função da tela de filtros
@@ -111,7 +132,7 @@ def screen_newRules():
     st.plotly_chart(fig)
 
     # Adicionar nova regra
-    st.write("### Adicionar Filtos como nova Regra")
+    st.write("### Adicionar Filtros como nova Regra")
     rule_name = st.text_input("Nome da Regra")
     rule_weight = st.number_input("Peso da Regra", min_value=0, step=1)
     add_rule_button = st.button("Adicionar Regra")
