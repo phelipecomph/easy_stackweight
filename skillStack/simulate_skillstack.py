@@ -1,13 +1,17 @@
 from skillStack.skill_stack import SkillStack
 from typing import List, Union, Literal
+import plotly.express as px
 import pandas as pd
+import json
 
+def _load_rules():
+    with open("rules.json", "r") as f:
+        loaded_rules = json.load(f)
 
-RULES = [
-    #{"habilidade": "nome da habilidade", "regra": função Lambda, "peso": valor do peso},
-    {"habilidade": "habilidade_teste",'regra': lambda vars: (vars.get('trecho_outro_genero_9') == 0),'peso': 10},
-    {"habilidade": "outra_habilidade_teste",'regra': lambda vars: (vars.get('trecho_outro_genero_9') == 0) & (vars.get('num_pontuacao_eixo_2')>=120),'peso': 5},
-]
+    # Reconstruir as lambdas
+    for rule in loaded_rules:
+        rule["regra"] = eval(rule["regra"])
+    return loaded_rules
 
 # Função para verificar as regras
 def _check_rules(variables, rules):
@@ -45,6 +49,7 @@ def simulate_stack(
     output_type: Literal["xlsx", "csv", "print", "df", "stacks", "plot"] = "stacks",
     output_path: str = "output",
 ) -> Union[None, dict, pd.DataFrame]:
+    RULES = _load_rules()
     rules = new_rules + RULES
 
     # Verifica se df_essays é uma string (caminho para arquivo)
@@ -103,4 +108,8 @@ def simulate_stack(
         return output_data
 
     elif output_type == "plot":
-        return _mean_stack(output_data)
+        df = pd.DataFrame(list(_mean_stack(output_data).items()), columns=["Regra", "Peso"])
+
+        # Criar o gráfico de barras com Plotly
+        fig = px.bar(df, x="Regra", y="Peso", title="Gráfico de Barras")
+        return fig

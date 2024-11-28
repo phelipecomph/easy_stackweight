@@ -74,8 +74,8 @@ def screen_newRules():
     st.write("### Dados Filtrados")
     st.dataframe(filtered_df.head(1000))
 
-    processed_result = simulate_stack(filtered_df, output_type="plot")
-    st.write(processed_result)
+    fig = simulate_stack(filtered_df, output_type="plot")
+    st.plotly_chart(fig)
 
 if __name__ == '__main__':
     screen_newRules()
