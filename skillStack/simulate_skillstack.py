@@ -1,4 +1,4 @@
-from skill_stack import SkillStack
+from skillStack.skill_stack import SkillStack
 from typing import List, Union, Literal
 import pandas as pd
 
@@ -25,26 +25,27 @@ def _check_rules(variables, rules):
 
 
 def _mean_stack(stacks:List[dict]):
-    all_keys = set().union(*(d.keys() for d in stacks))
+    all_keys = set().union(*(d['stack_result'].keys() for d in stacks))
 
     # Calcular a média considerando valores ausentes como 0
     result = {}
     for key in all_keys:
-        values = [d.get(key, 0) for d in stacks]  # Usa 0 para valores ausentes
+        values = [d['stack_result'].get(key, 0) for d in stacks]  # Usa 0 para valores ausentes
+        #print(values)
         result[key] = sum(values) / len(stacks)
     
     return result
 
 def simulate_stack(
     df_essays: Union[pd.DataFrame, str],
-    new_rules: List[dict],
+    new_rules: List[dict] = [],
     cods: List[int] = [],
     sequence_method: bool = False,
     show_n: int = 10,
     output_type: Literal["xlsx", "csv", "print", "df", "stacks", "plot"] = "stacks",
     output_path: str = "output",
 ) -> Union[None, dict, pd.DataFrame]:
-    rules = new_rules | RULES
+    rules = new_rules + RULES
 
     # Verifica se df_essays é uma string (caminho para arquivo)
     if isinstance(df_essays, str):
@@ -72,14 +73,10 @@ def simulate_stack(
 
         weights = _check_rules(dict(row), rules)
         stack.update(weights)
-        result = [
-            f"{str(key).rjust(2,'0')}: {str(stack.stack[key]).ljust(5,'0')}"
-            for key in stack.greater(show_n)
-        ]
         output_data.append(
             {
                 "cod_correcao_redacao": row["cod_correcao_redacao"],
-                "stack_result": result,
+                "stack_result": stack.stack,
             }
         )
 
@@ -106,5 +103,4 @@ def simulate_stack(
         return output_data
 
     elif output_type == "plot":
-        stack = _mean_stack(output_data)
-        return stack
+        return _mean_stack(output_data)

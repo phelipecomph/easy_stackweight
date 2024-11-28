@@ -3,6 +3,7 @@ import pandas as pd
 import numpy as np
 import math
 from utils.load_data import load_data
+from skillStack.simulate_skillstack import simulate_stack
 
 # Função da tela de filtros
 def screen_newRules():
@@ -72,6 +73,9 @@ def screen_newRules():
 
     st.write("### Dados Filtrados")
     st.dataframe(filtered_df.head(1000))
+
+    processed_result = simulate_stack(filtered_df, output_type="plot")
+    st.write(processed_result)
 
 if __name__ == '__main__':
     screen_newRules()
