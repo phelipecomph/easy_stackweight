@@ -1,18 +1,8 @@
 import streamlit as st
 import pandas as pd
 import numpy as np
-
-
-# Exemplo de DataFrame
-def _create_example_dataframe():
-    np.random.seed(42)
-    data = {
-        'Categoria': np.random.choice(['A', 'B', 'C'], size=100),
-        'Valor Inteiro': np.random.randint(1, 100, size=100),
-        'Valor Float': np.random.uniform(0, 1, size=100).round(2),
-        'Texto': np.random.choice(['X', 'Y', 'Z'], size=100),
-    }
-    return pd.DataFrame(data)
+import math
+from utils.load_data import load_data
 
 # Função da tela de filtros
 def screen_newRules():
@@ -20,14 +10,14 @@ def screen_newRules():
     st.write("Este aplicativo permite filtrar um DataFrame com base em colunas selecionadas e exibe a contagem de linhas correspondentes.")
 
     # Carregar DataFrame
-    df = _create_example_dataframe()
+    df = load_data(method='csv', path='data/conteudo_adaptativoc2_dados_selecionados.csv')
 
     # Seleção de colunas a filtrar
     st.sidebar.header("Configuração de Filtros")
     selected_columns = st.sidebar.multiselect(
         "Selecione as colunas para adicionar filtros:",
         options=df.columns,
-        default=df.columns
+        default=[]
     )
 
     # Criar filtros dinâmicos
@@ -35,13 +25,22 @@ def screen_newRules():
     filters = {}
     for col in selected_columns:
         if pd.api.types.is_numeric_dtype(df[col]):
-            min_value = float(df[col].min())
-            max_value = float(df[col].max())
+            if pd.api.types.is_integer_dtype(df[col]):
+                # int 
+                min_value = int(df[col].min())
+                max_value = math.ceil(df[col].max(),)
+                step = 1 
+            else: 
+                # float
+                min_value = float(df[col].min())
+                max_value = float(df[col].max())
+                step = 0.01
             range_selected = st.sidebar.slider(
                 f"Filtro de intervalo para {col}",
                 min_value=min_value,
                 max_value=max_value,
-                value=(min_value, max_value)
+                value=(min_value, max_value),
+                step=step
             )
             filters[col] = range_selected
         else:
@@ -49,9 +48,10 @@ def screen_newRules():
             selected_values = st.sidebar.multiselect(
                 f"Filtro para {col}",
                 options=unique_values,
-                default=unique_values
+                default=[]  # Começa vazio
             )
-            filters[col] = selected_values
+            # Filtro vazio considera todos os valores
+            filters[col] = selected_values if selected_values else unique_values
 
     # Filtrar DataFrame
     filtered_df = df.copy()
@@ -71,7 +71,7 @@ def screen_newRules():
     st.write(f"**Número de linhas:** {num_filtered} ({percentage:.2f}%)")
 
     st.write("### Dados Filtrados")
-    st.dataframe(filtered_df)
+    st.dataframe(filtered_df.head(1000))
 
-
-screen_newRules()
+if __name__ == '__main__':
+    screen_newRules()
