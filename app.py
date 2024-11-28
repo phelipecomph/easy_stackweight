@@ -1,5 +1,5 @@
 import streamlit as st
-from pages import new_rule  # Importa a tela de filtros
+from pages import new_rule 
 
 # Configuração geral do app
 st.set_page_config(page_title="Main", layout="wide")

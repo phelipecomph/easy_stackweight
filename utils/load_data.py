@@ -20,5 +20,5 @@ def _create_example_dataframe():
     }
     return pd.DataFrame(data)
 
-def _load_from_csv(path: str):
+def _load_from_csv(path: str, **kwargs):
     return pd.read_csv(path)
