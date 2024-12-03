@@ -172,7 +172,7 @@ def result_container(filtered_df, df):
 
 
 # Função da tela de filtros
-def screen_newRules():
+def page_singleEssays():
     st.title("Filtro de DataFrame Interativo")
     st.write("Este aplicativo permite filtrar um DataFrame com base em colunas selecionadas e exibe a contagem de linhas correspondentes.")
 
@@ -188,7 +188,8 @@ def screen_newRules():
     # Carregar DataFrame
     df = load_data(method='csv', path='data/conteudo_adaptativoc2_dados_selecionados.csv')
     try: df.sample(sample_size)
-    except ValueError: pass
+    except ValueError:
+        st.warning("Número de amostras excede o tamanho do dataset.")
 
     # Seleção de colunas a filtrar
     st.sidebar.header("Configuração de Filtros")
@@ -217,4 +218,4 @@ def screen_newRules():
     new_rule_container(selected_columns, filters, df)
 
 if __name__ == '__main__':
-    screen_newRules()
+    page_singleEssays()
