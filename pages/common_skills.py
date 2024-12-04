@@ -70,6 +70,15 @@ def result_container(filtered_df, df):
     st.write("### Dados Filtrados")
     st.dataframe(filtered_df.head(1000))
 
+    # Contar habilidades no top 1 e exibir gráfico
+    st.write("### Análise de Habilidades no Top 1")
+    top_skills = count_top_skills(filtered_df)
+    if top_skills:
+        fig = plot_top_skills(top_skills)
+        st.plotly_chart(fig, use_container_width=True)
+    else:
+        st.write("Nenhuma habilidade foi identificada como top 1 nas pilhas calculadas.")
+
 
 def page_commonSkills():
     st.title("Análise de Habilidades no Top 1")
