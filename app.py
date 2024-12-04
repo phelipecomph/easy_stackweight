@@ -1,5 +1,5 @@
 import streamlit as st
-from pages import edit_rules, single_essays, sequence_essays
+from pages import common_skills, edit_rules, single_essays, sequence_essays
 
 # Configuração geral do app
 st.set_page_config(page_title="Main", layout="wide")
