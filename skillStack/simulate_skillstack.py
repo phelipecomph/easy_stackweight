@@ -137,6 +137,7 @@ def simulate_stack(
 
     elif output_type == "anim":
         df_anim = pd.DataFrame(animation_data)
+        df_anim = df_anim.sort_values(by=["iteration", "weight"], ascending=[True, False])
         fig = px.bar(
             df_anim,
             x="skill",
