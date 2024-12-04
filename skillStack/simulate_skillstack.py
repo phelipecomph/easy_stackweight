@@ -15,20 +15,23 @@ def _load_rules():
 
 # Função para verificar as regras
 def _check_rules(variables, rules):
-    results = {}
+    weights = {}
+    decays = {}
     for rule_dict in rules:
         rule_name = rule_dict["habilidade"]
         rule_func = rule_dict["regra"]
         rule_weight = rule_dict["peso"]
-        if not rule_name in results:
-            results[rule_name] = 0
+        rule_decay = rule_dict["decaimento"]
+        if not rule_name in weights:
+            weights[rule_name] = 0
+            decays[rule_name] = rule_decay
         try:
             if rule_func(variables):
-                results[rule_name] += rule_weight
+                weights[rule_name] += rule_weight
         except TypeError:
             pass
 
-    return results
+    return weights, decays
 
 
 def _mean_stack(stacks:List[dict]):
@@ -80,8 +83,8 @@ def simulate_stack(
         if not sequence_method:
             stack = SkillStack()
 
-        weights = _check_rules(row._asdict(), rules)
-        stack.update(weights)
+        weights, decays = _check_rules(row._asdict(), rules)
+        stack.update(weights, decays)
         stack_result = stack.stack
         output_data.append(
             {

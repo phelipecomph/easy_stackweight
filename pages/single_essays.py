@@ -170,7 +170,6 @@ def result_container(filtered_df, df):
     fig = simulate_stack(filtered_df, output_type="plot")
     st.plotly_chart(fig)
 
-
 # Função da tela de filtros
 def page_singleEssays():
     st.title("Filtro de DataFrame Interativo")
