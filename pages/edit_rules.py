@@ -24,6 +24,7 @@ def screen_editRules():
         st.session_state.rule_name = ''
         st.session_state.rule_text = ''
         st.session_state.rule_weight = 0
+        st.session_state.rule_decay = 0.5
         st.session_state.rerun = False
 
     # Carregar regras do arquivo
@@ -40,11 +41,13 @@ def screen_editRules():
         habilidade = st.text_input(f"Nome da Habilidade (Regra {i + 1})", rule["habilidade"], key=f"habilidade_{i}")
         regra = st.text_area(f"String da Regra (Regra {i + 1})", rule["regra"], key=f"regra_{i}")
         peso = st.number_input(f"Peso (Regra {i + 1})", value=rule["peso"], min_value=0, step=1, key=f"peso_{i}")
+        decaimento = st.number_input(f"Decaimento (Regra {i + 1})", value=rule["decaimento"] if 'decaimento' in rule else 0.5, min_value=0.0, max_value=1.0, step=0.1, key=f"decay_{i}")
 
         # Atualizar regra com novos valores
         rule["habilidade"] = habilidade
         rule["regra"] = regra
         rule["peso"] = peso
+        rule["decaimento"] = decaimento
 
         # Botão para deletar a regra
         if st.button(f"Deletar Regra {i + 1}"):
@@ -65,6 +68,7 @@ def screen_editRules():
     new_habilidade = st.text_input("Nome da Nova Habilidade", key="rule_name")
     new_regra = st.text_area("String da Nova Regra", key="rule_text")
     new_peso = st.number_input("Peso da Nova Regra", min_value=0, step=1, key="rule_weight")
+    new_decaimento = st.number_input("Peso da Nova Regra", min_value=0.0, max_value=1.0, step=0.1, key="rule_decay")
 
     if st.button("Adicionar Nova Regra"):
         if not new_habilidade or not new_regra:
@@ -73,7 +77,8 @@ def screen_editRules():
             new_rule = {
                 "habilidade": new_habilidade,
                 "regra": new_regra,
-                "peso": int(new_peso)
+                "peso": int(new_peso),
+                "decaimento": float(new_decaimento)
             }
             rules.append(new_rule)
             save_rules(rules)
@@ -82,6 +87,7 @@ def screen_editRules():
             del st.session_state.rule_name
             del st.session_state.rule_text
             del st.session_state.rule_weight
+            del st.session_state.rule_decay
             st.session_state.rerun = True
             st.rerun()  # Recarregar a página
 

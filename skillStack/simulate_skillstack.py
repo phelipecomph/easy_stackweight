@@ -15,20 +15,23 @@ def _load_rules():
 
 # Função para verificar as regras
 def _check_rules(variables, rules):
-    results = {}
+    weights = {}
+    decays = {}
     for rule_dict in rules:
         rule_name = rule_dict["habilidade"]
         rule_func = rule_dict["regra"]
         rule_weight = rule_dict["peso"]
-        if not rule_name in results:
-            results[rule_name] = 0
+        rule_decay = rule_dict["decaimento"]
+        if not rule_name in weights:
+            weights[rule_name] = 0
+            decays[rule_name] = rule_decay
         try:
             if rule_func(variables):
-                results[rule_name] += rule_weight
+                weights[rule_name] += rule_weight
         except TypeError:
             pass
 
-    return results
+    return weights, decays
 
 
 def _mean_stack(stacks:List[dict]):
@@ -49,7 +52,7 @@ def simulate_stack(
     cods: List[int] = [],
     sequence_method: bool = False,
     show_n: int = 10,
-    output_type: Literal["xlsx", "csv", "print", "df", "stacks", "plot"] = "stacks",
+    output_type: Literal["xlsx", "csv", "print", "df", "stacks", "plot", "anim"] = "stacks",
     output_path: str = "output",
 ) -> Union[None, dict, pd.DataFrame]:
     RULES = _load_rules()
@@ -75,18 +78,31 @@ def simulate_stack(
     # Inicializa a pilha de habilidades
     stack = SkillStack()
     output_data = []
-    for _, row in df.iterrows():
+    animation_data = []
+    for idx, row in enumerate(df.itertuples(index=False), start=1):  # Usar índice sequencial
         if not sequence_method:
             stack = SkillStack()
 
-        weights = _check_rules(dict(row), rules)
-        stack.update(weights)
+        weights, decays = _check_rules(row._asdict(), rules)
+        stack.update(weights, decays)
+        stack_result = stack.stack
         output_data.append(
             {
-                "cod_correcao_redacao": row["cod_correcao_redacao"],
-                "stack_result": stack.stack,
+                "cod_correcao_redacao": row.cod_correcao_redacao,
+                "stack_result": stack_result,
             }
         )
+
+        # Coleta dados para animação (apenas habilidades com valores > 0)
+        for skill, weight in stack_result.items():
+            if weight > 0:
+                animation_data.append(
+                    {
+                        "iteration": idx,  # Índice sequencial
+                        "skill": skill,
+                        "weight": weight,
+                    }
+                )
 
     # Processa a saída com base no tipo
     if output_type == "print":
@@ -111,11 +127,25 @@ def simulate_stack(
         return output_data
 
     elif output_type == "plot":
-        df = pd.DataFrame(list(_mean_stack(output_data).items()), columns=["Regra", "Peso"])
-        df = df.loc[df['Peso']>0]
-        df = df.sort_values(by="Peso", ascending=False)
+        df_plot = pd.DataFrame(list(_mean_stack(output_data).items()), columns=["Regra", "Peso"])
+        df_plot = df_plot.loc[df_plot['Peso'] > 0]
+        df_plot = df_plot.sort_values(by="Peso", ascending=False)
         
-
         # Criar o gráfico de barras com Plotly
-        fig = px.bar(df, x="Regra", y="Peso", title="Pilha Média")
+        fig = px.bar(df_plot, x="Regra", y="Peso", title="Pilha Média")
+        return fig
+
+    elif output_type == "anim":
+        df_anim = pd.DataFrame(animation_data)
+        df_anim = df_anim.sort_values(by=["iteration", "weight"], ascending=[True, False])
+        fig = px.bar(
+            df_anim,
+            x="skill",
+            y="weight",
+            color="skill",
+            animation_frame="iteration",
+            title="Evolução da Pilha ao Longo do Tempo",
+            labels={"iteration": "Redação", "weight": "Peso", "skill": "Habilidade"},
+            range_y=[0, 20],
+        )
         return fig

@@ -56,7 +56,7 @@ class SkillStack:
         """
         self.stack = {}
 
-    def update(self, weights: dict):
+    def update(self, weights: dict, decays: dict):
         """
         Updates the stack with new weights, applying the forgetting logic.
 
@@ -64,8 +64,10 @@ class SkillStack:
         weights : dict
             A dictionary where the keys correspond to skills and the values
             are the weights to be added to the stack.
+        decays : dict
+            TODO
         """
-        self._forget()
+        self._forget(decays)
         self.stack = {
             key: round(self.stack.get(key, 0.0) + weights[key], 2) for key in weights
         }
@@ -84,13 +86,13 @@ class SkillStack:
         """
         return nlargest(n, self.stack, key=self.stack.get)
 
-    def _forget(self):
+    def _forget(self, decays):
         """
         Applies the forgetting logic to the skills in the stack,
         reducing their values according to the forgetting weight.
         """
         self.stack = {
-            key: self.stack[key] * (1 - self.forget_weight) for key in self.stack
+            key: self.stack[key] * (1 - decays[key]) for key in self.stack
         }
 
     def to_jsonfile(self):
