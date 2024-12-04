@@ -8,7 +8,7 @@ from skillStack.simulate_skillstack import simulate_stack
 
 RULES_FILE = "rules.json"
 
-def write_rule(filters, rule_name, rule_weight, df):
+def write_rule(filters, rule_name, rule_weight, rule_decay_rate, df):
     # Gerar a regra em formato de string
     rule_parts = []
 
@@ -41,7 +41,8 @@ def write_rule(filters, rule_name, rule_weight, df):
     new_rule = {
         "habilidade": rule_name,
         "regra": f"lambda vars: {rule_string}",
-        "peso": int(rule_weight)
+        "peso": int(rule_weight),
+        "decaimento": float(rule_decay_rate)
     }
 
     # Salvar a regra no arquivo JSON
@@ -141,18 +142,17 @@ def filter_element(filter_type, df, col, filters):
             )
             filters[col] = selected_values if selected_values else unique_values
 
-def new_rule_container(selected_columns, filters, df):
+def new_rule_container(filters, df):
     # Adicionar nova regra
-    st.write("### Adicionar Filtros como nova Regra")
-    rule_name = st.text_input("Nome da Regra")
-    rule_weight = st.number_input("Peso da Regra", min_value=0, step=1)
-    add_rule_button = st.button("Adicionar Regra")
-
-    if add_rule_button:
-        if not rule_name or not selected_columns:
-            st.error("Por favor, preencha o nome da regra e selecione pelo menos uma coluna.")
+    st.sidebar.header("Adicionar Nova Regra")
+    rule_name = st.sidebar.text_input("Nome da Regra")
+    rule_weight = st.sidebar.number_input("Peso da Regra", min_value=0, step=1)
+    rule_decay_rate = st.sidebar.number_input("Decaimento do Peso", min_value=0.0, max_value=1.0, step=0.1)
+    if st.sidebar.button("Adicionar Regra"):
+        if not rule_name:
+            st.error("Por favor, forneça um nome para a regra.")
         else:
-            write_rule(filters, rule_name, rule_weight, df)
+            write_rule(filters, rule_name, rule_weight, rule_decay_rate, df)
             st.success("Regra adicionada com sucesso!")
 
 def result_container(filtered_df, df):
@@ -215,7 +215,7 @@ def page_singleEssays():
     filtered_df = apply_filters(df, filters)
     
     result_container(filtered_df, df)
-    new_rule_container(selected_columns, filters, df)
+    new_rule_container(filters, df)
 
 if __name__ == '__main__':
     page_singleEssays()
