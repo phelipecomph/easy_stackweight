@@ -5,20 +5,8 @@ from collections import Counter
 from utils.load_data import load_data
 from skillStack.simulate_skillstack import simulate_stack
 
-def apply_filters(df, filters):
-    # Filtrar DataFrame
-    filtered_df = df.copy()
-    for col, criteria in filters.items():
-        if pd.api.types.is_numeric_dtype(df[col]):
-            if isinstance(criteria, tuple):
-                filtered_df = filtered_df[
-                    (filtered_df[col] >= criteria[0]) & (filtered_df[col] <= criteria[1])
-                ]
-            else:
-                filtered_df = filtered_df[filtered_df[col].isin(criteria)]
-        else:
-            filtered_df = filtered_df[filtered_df[col].isin(criteria)]
-    return filtered_df
+from components.new_rule_component import new_rule_component
+from components.filter_componet import filter_component, apply_filters, toggle_button
 
 def count_top_skills(df):
     # Supondo que stack_result tenha sido obtido corretamente de simulate_stack
@@ -71,6 +59,18 @@ def plot_top_skills(top_skills):
     )
     return fig
 
+def result_container(filtered_df, df):
+    # Mostrar resultados gerais
+    st.write("### Linhas Correspondentes")
+    num_filtered = len(filtered_df)
+    num_original = len(df)
+    percentage = (num_filtered / num_original) * 100
+    st.write(f"**Número de linhas:** {num_filtered} ({percentage:.2f}%)")
+
+    st.write("### Dados Filtrados")
+    st.dataframe(filtered_df.head(1000))
+
+
 def page_commonSkills():
     st.title("Análise de Habilidades no Top 1")
     st.write("Esta página apresenta uma análise sobre quantas vezes cada habilidade ficou no top 1 das pilhas do DataFrame filtrado.")
@@ -103,35 +103,18 @@ def page_commonSkills():
     st.sidebar.header("Filtros por Coluna")
     filters = {}
     for col in selected_columns:
-        if pd.api.types.is_numeric_dtype(df[col]):
-            min_val = float(df[col].min())
-            max_val = float(df[col].max())
-            filters[col] = st.sidebar.slider(f"Intervalo: {col}", min_value=min_val, max_value=max_val, value=(min_val, max_val))
-        else:
-            unique_values = df[col].unique()
-            filters[col] = st.sidebar.multiselect(f"Valores: {col}", options=unique_values, default=unique_values)
+        # Se o tipo de filtro não estiver no session_state, inicializa como "Intervalo Numérico"
+        if f"filter_type_{col}" not in st.session_state:
+            st.session_state[f"filter_type_{col}"] = "Intervalo Numérico"
 
-    # Aplicar filtros ao DataFrame
+        filter_type = toggle_button(col)
+        filter_component(filter_type, df, col, filters)
+
+
     filtered_df = apply_filters(df, filters)
 
-    # Mostrar resultados gerais
-    st.write("### Linhas Correspondentes")
-    num_filtered = len(filtered_df)
-    num_original = len(df)
-    percentage = (num_filtered / num_original) * 100
-    st.write(f"**Número de linhas:** {num_filtered} ({percentage:.2f}%)")
-
-    st.write("### Dados Filtrados")
-    st.dataframe(filtered_df.head(1000))
-
-    # Contar habilidades no top 1 e exibir gráfico
-    st.write("### Análise de Habilidades no Top 1")
-    top_skills = count_top_skills(filtered_df)
-    if top_skills:
-        fig = plot_top_skills(top_skills)
-        st.plotly_chart(fig, use_container_width=True)
-    else:
-        st.write("Nenhuma habilidade foi identificada como top 1 nas pilhas calculadas.")
+    result_container(filtered_df, df)
+    new_rule_component(filters, df)
 
 if __name__ == '__main__':
     page_commonSkills()
