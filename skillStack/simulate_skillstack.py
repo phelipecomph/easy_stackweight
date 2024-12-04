@@ -145,5 +145,6 @@ def simulate_stack(
             animation_frame="iteration",
             title="Evolução da Pilha ao Longo do Tempo",
             labels={"iteration": "Redação", "weight": "Peso", "skill": "Habilidade"},
+            range_y=[0, 20],
         )
         return fig
